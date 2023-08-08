@@ -1,5 +1,9 @@
-from flask import render_template, request
-from keep_alive import keep_alive, app
+#from flask import render_template, request
+#from keep_alive import keep_alive, app
+from flask import Flask, render_template, request
+
+
+app = Flask(__name__)
 
 
 @app.route("/")
@@ -26,11 +30,13 @@ def calculate():
         return render_template("calculator.html", result=result)
 
     elif operation == "divide":
+        if float(number_two) == 0:
+            return render_template("calculator.html", result="Error: Cannot divide by zero")
         result = float(number_one) / float(number_two)
         return render_template("calculator.html", result=result)
 
     else:
-        return render_template("calculator.html")
+        return render_template("calculator.html", result="Error: Invalid operation")
 
 
 @app.errorhandler(404)
@@ -44,4 +50,4 @@ def server_error(error):
 
 
 if __name__ == "__main__":
-    keep_alive()
+    app.run()
